@@ -14,7 +14,7 @@ public class Book {
     String author;
     String genre;
     String description;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL,orphanRemoval = true)
     List<Review> reviews;
 
     public String getBookId() {

@@ -1,8 +1,6 @@
 package com.coding.visit.dtos;
 
 
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -20,30 +18,17 @@ public class UserDto {
 //    @Email(message = "invalid email ")
     String email ;
 
-    @Size(min = 5, max = 50,message = "password character between  5 and 50")
+    @Size(min = 5, max = 100,message = "password character between  5 and 100")
     @NotBlank(message = "password can not empty and null")
     String password;
 
-    @Size(min = 1, max = 2000, message = "name character between 1 to 2000")
+    @Size(min = 1, max = 1000, message = "name character between 1 to 1000")
     String about;
 
     @NotBlank(message = "gender can not empty and null")
     @Size(min= 4 ,  max = 6,message = "invalid gender")
     String gender ;
 
-    public @Pattern(
-            regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
-            message = "Invalid Email"
-    ) String getEmail() {
-        return email;
-    }
-
-    public void setEmail(@Pattern(
-            regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
-            message = "Invalid Email"
-    ) String email) {
-        this.email = email;
-    }
 
     public String getUserId() {
         return userId;
@@ -61,20 +46,33 @@ public class UserDto {
         this.name = name;
     }
 
+    public @Pattern(
+            regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "Invalid Email"
+    ) String getEmail() {
+        return email;
+    }
 
-    public @Size(min = 5, max = 50, message = "password character between  5 and 50") @NotBlank(message = "password can not empty and null") String getPassword() {
+    public void setEmail(@Pattern(
+            regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,}$",
+            message = "Invalid Email"
+    ) String email) {
+        this.email = email;
+    }
+
+    public @Size(min = 5, max = 100, message = "password character between  5 and 100") @NotBlank(message = "password can not empty and null") String getPassword() {
         return password;
     }
 
-    public void setPassword(@Size(min = 5, max = 50, message = "password character between  5 and 50") @NotBlank(message = "password can not empty and null") String password) {
+    public void setPassword(@Size(min = 5, max = 100, message = "password character between  5 and 100") @NotBlank(message = "password can not empty and null") String password) {
         this.password = password;
     }
 
-    public @Size(min = 1, max = 2000, message = "name character between 1 to 2000") String getAbout() {
+    public @Size(min = 1, max = 1000, message = "name character between 1 to 1000") String getAbout() {
         return about;
     }
 
-    public void setAbout(@Size(min = 1, max = 2000, message = "name character between 1 to 2000") String about) {
+    public void setAbout(@Size(min = 1, max = 1000, message = "name character between 1 to 1000") String about) {
         this.about = about;
     }
 

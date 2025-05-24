@@ -8,6 +8,7 @@ import com.coding.visit.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,9 +22,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private ModelMapper mapper;
+
+    @Autowired
+    PasswordEncoder encoder;
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
+        userDto.setPassword(encoder.encode(userDto.getPassword()));
         User saved = userRepository.save(mapper.map(userDto , User.class));
         return mapper.map(saved, UserDto.class ) ;
     }
@@ -53,7 +58,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("user not found given id "));
         user.setAbout(userDto.getAbout());
         user.setName(userDto.getName());
-        user.setPassword(userDto.getPassword());
+        user.setPassword(encoder.encode(userDto.getPassword()));
         User updated= userRepository.save(user );
         return mapper.map(updated, UserDto.class) ;
     }
