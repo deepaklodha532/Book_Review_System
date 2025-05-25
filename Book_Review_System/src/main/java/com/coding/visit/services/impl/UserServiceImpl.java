@@ -1,8 +1,10 @@
 package com.coding.visit.services.impl;
 
 import com.coding.visit.dtos.UserDto;
+import com.coding.visit.entities.Role;
 import com.coding.visit.entities.User;
 import com.coding.visit.exceptions.ResourceNotFoundException;
+import com.coding.visit.repositories.RoleRepository;
 import com.coding.visit.repositories.UserRepository;
 import com.coding.visit.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -12,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,12 +27,21 @@ public class UserServiceImpl implements UserService {
     private ModelMapper mapper;
 
     @Autowired
+    private RoleRepository roleRepository ;
+
+    @Autowired
     PasswordEncoder encoder;
     @Override
     public UserDto createUser(UserDto userDto) {
         userDto.setUserId(UUID.randomUUID().toString());
         userDto.setPassword(encoder.encode(userDto.getPassword()));
-        User saved = userRepository.save(mapper.map(userDto , User.class));
+        Role role = new Role();
+        role.setRoleId(UUID.randomUUID().toString());
+        role.setName("ROLE_NORMAL");
+        Role roleNormal= roleRepository.findByName("ROLE_NORMAL").orElse(role);
+        User user = mapper.map(userDto , User.class);
+        user.setRoles(Set.of(roleNormal));
+        User saved = userRepository.save(user);
         return mapper.map(saved, UserDto.class ) ;
     }
 

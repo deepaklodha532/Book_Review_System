@@ -48,10 +48,13 @@ public class SecurityConfig {
 
         httpSecurity.csrf(i->i.disable());
         httpSecurity.authorizeHttpRequests(request->
-                request.requestMatchers(HttpMethod.POST, "/users/**").permitAll()
-                        .requestMatchers("/users/**").hasRole("ADMIN")
+                request
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/users/**").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/users/**").hasAnyRole("ADMIN","NORMAL")
                         .requestMatchers(HttpMethod.POST,"/books/**").hasRole("ADMIN")
-                        .requestMatchers("books/**").permitAll()
+                        .requestMatchers("books/**").hasAnyRole("NORMAL","ADMIN")
                         .requestMatchers("/reviews/**").hasAnyRole("NORMAL","ADMIN")
                         .anyRequest().authenticated()
                 );
